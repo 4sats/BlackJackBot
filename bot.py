@@ -3,12 +3,38 @@
 import logging
 import logging.handlers
 import pathlib
+import re
+from database import Database
 
 from telegram.ext import Updater
-
+from telethon import TelegramClient, events
 import config
-from blackjackbot import handlers, error_handler
+from blackjackbot import error_handler, handlers
 
+api_id = 2076128
+api_hash = 'f46cf8f1376d665fd2c410d61118703a'
+#check deposit
+client = TelegramClient('anon', api_id, api_hash)
+
+@client.on(events.NewMessage)
+async def my_event_handler(event):
+    if 'You were tipped ' in event.raw_text:
+        try:
+            amountt = re.search('You were tipped (.+?) WEBD', event.raw_text).group(1)
+            userr = re.search('@(.+?)\.', event.raw_text).group(1)
+            print(userr)
+            print(amountt)
+            ball = Database().get_balance_username(userr)
+            newball = int(ball) + int(amountt)
+            Database().set_balance_username(userr, newball)
+            print('deposited!')
+        except AttributeError:
+            print('deposit failed')
+
+client.start()
+#client.run_until_disconnected()
+
+#start bot
 logdir_path = pathlib.Path(__file__).parent.joinpath("logs").absolute()
 logfile_path = logdir_path.joinpath("bot.log")
 
@@ -41,4 +67,7 @@ else:
     logger.info("Started polling!")
 
 logger.info("Bot started as @{}".format(updater.bot.username))
+client.run_until_disconnected()
 updater.idle()
+
+

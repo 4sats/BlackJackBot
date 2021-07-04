@@ -33,7 +33,7 @@ class Database(object):
         except Exception:
             self.logger.error("An error has occurred while creating the database!")
 
-        self.connection = sqlite3.connect(database_path)
+        self.connection = sqlite3.connect(database_path, check_same_thread=False)
         self.connection.row_factory = sqlite3.Row
         self.connection.text_factory = lambda x: str(x, 'utf-8', "ignore")
         self.cursor = self.connection.cursor()
@@ -240,10 +240,20 @@ class Database(object):
         self.cursor.execute("UPDATE users SET balance=? WHERE user_id=?;",[balance, str(user_id)])
         self.connection.commit()
 
+    def set_balance_username(self,username,balance):
+        self.cursor.execute("UPDATE users SET balance=? WHERE username=?;",[balance, str(username)])
+        self.connection.commit()
+
     def get_balance(self,user_id):
         self.cursor.execute("SELECT balance FROM users WHERE user_id=?;", [str(user_id)])
         result = self.cursor.fetchone()
         return result[0]
+
+    def get_balance_username(self,username):
+        self.cursor.execute("SELECT balance FROM users WHERE username=?;", [str(username)])
+        result = self.cursor.fetchone()
+        return result[0]
+
     def set_bet(self,user_id, bet):
         self.cursor.execute("UPDATE users SET bet=? WHERE user_id=?;", [bet,str(user_id)])
         self.connection.commit()
