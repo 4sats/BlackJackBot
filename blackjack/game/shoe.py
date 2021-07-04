@@ -9,7 +9,7 @@ from .deck import Deck
 class Shoe(object):
     # Represents a dealing shoe (holder of several decks)
 
-    def __init__(self, decks=12):
+    def __init__(self, decks=24):
         self._cards = []
         self.deck_amount = decks
         for _ in range(decks):

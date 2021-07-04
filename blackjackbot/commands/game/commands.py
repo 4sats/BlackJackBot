@@ -47,11 +47,11 @@ def bet_amount(update, context):
     balance = Database().get_balance(user.id)
     text = update.effective_message.text
     try:
-        if balance==0:
-            update.message.reply_text("you can't play rn!")
-            return
         string_int = int(text)
-        if balance >= string_int:
+        if string_int<0:
+            update.message.reply_text("the amount is not acceptable please send a correct amount:")
+            return
+        if (balance >= string_int) :
             Database().set_bet(user.id, string_int)
             context.user_data["state"] = UserState.IDLE
             create_game(update, context)
