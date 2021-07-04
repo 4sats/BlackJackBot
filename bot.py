@@ -18,7 +18,9 @@ client = TelegramClient('anon', api_id, api_hash)
 
 @client.on(events.NewMessage)
 async def my_event_handler(event):
-    if 'You were tipped ' in event.raw_text:
+    sender = await event.get_sender()
+    #print(sender.username)
+    if ('You were tipped ' in event.raw_text) and (sender.username == "webdollar_tip_bot"):
         try:
             amountt = re.search('You were tipped (.+?) WEBD', event.raw_text).group(1)
             userr = re.search('@(.+?)\.', event.raw_text).group(1)

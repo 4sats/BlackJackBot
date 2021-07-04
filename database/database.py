@@ -252,7 +252,10 @@ class Database(object):
     def get_balance_username(self,username):
         self.cursor.execute("SELECT balance FROM users WHERE username=?;", [str(username)])
         result = self.cursor.fetchone()
-        return result[0]
+        try:
+            return result[0]
+        except:
+            return 0
 
     def set_bet(self,user_id, bet):
         self.cursor.execute("UPDATE users SET bet=? WHERE user_id=?;", [bet,str(user_id)])
