@@ -5,3 +5,4 @@ from enum import Enum
 class UserState(Enum):
     COMMENTING = 0
     IDLE = 1
+    BETTING = 2

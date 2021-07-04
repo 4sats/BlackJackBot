@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from telegram.parsemode import ParseMode
-
+from telegram import ForceReply
 import blackjack.errors as errors
 from blackjack.game import BlackJackGame
 from blackjackbot.commands.util import html_mention, get_game_keyboard, get_join_keyboard, get_start_keyboard, remove_inline_keyboard
@@ -12,7 +12,7 @@ from blackjackbot.lang import Translator
 from blackjackbot.util import get_cards_string
 from database import Database
 from .functions import create_game, players_turn, next_player, is_button_affiliated
-
+from blackjackbot.util.userstate import UserState
 
 def start_cmd(update, context):
     """Handles messages contianing the /start command. Starts a game for a specific user"""
@@ -28,7 +28,37 @@ def start_cmd(update, context):
         # TODO notify user that there is a running game already?
     except NoActiveGameException:
         # If there is no game, we create one
-        create_game(update, context)
+        #create_game(update, context)
+        balance = Database().get_balance(user.id)
+        if balance > 0:
+            context.user_data["state"] = UserState.BETTING
+            update.effective_message.reply_text("Your balance is "+str(balance)+"web$ \nPlease send amount you want to bet in web$:", reply_markup=ForceReply())            
+        else:
+            update.effective_message.reply_text("please deposit some web$!")
+
+def bet_amount(update, context):
+    #update.message.reply_text("kkkkkk")
+        # Only handle the message, if the user is currently in the "betting" state
+    if context.user_data.get("state", None) != UserState.BETTING:
+        return
+
+    user = update.effective_user
+    chat = update.effective_chat
+    balance = Database().get_balance(user.id)
+    text = update.effective_message.text
+    try:
+        if balance==0:
+            update.message.reply_text("you can't play rn!")
+            return
+        string_int = int(text)
+        if balance >= string_int:
+            Database().set_bet(user.id, string_int)
+            context.user_data["state"] = UserState.IDLE
+            create_game(update, context)
+        else:
+            update.message.reply_text("Bet amount is more than your balance! please enter less amount:")
+    except ValueError:
+        update.message.reply_text("Please send a number:")
 
 
 def start_callback(update, context):
@@ -198,3 +228,4 @@ def newgame_callback(update, context):
 
 def rules_cmd(update, context):
     update.effective_message.reply_text("Rules:\n\n- Black Jack pays 3 to 2\n- Dealer must stand on 17 and must draw to 16\n- Insurance pays 2 to 1")
+

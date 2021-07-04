@@ -29,6 +29,7 @@ def comment_text(update, context):
     MessageHandler callback for processing comments sent by a user.
     Notifies the admins of the bot about the comment
     """
+    update.message.reply_text("kkkkkk comment")
     # Only handle the message, if the user is currently in the "commenting" state
     if context.user_data.get("state", None) != UserState.COMMENTING:
         return

@@ -71,6 +71,8 @@ class Database(object):
                        "'games_tie' INTEGER DEFAULT 0,"
                        "'last_played' INTEGER DEFAULT 0,"
                        "'banned' INTEGER DEFAULT 0,"
+                       "'balance' INTEGER DEFAULT 0,"
+                       "'bet' INTEGER DEFAULT 0,"
                        "PRIMARY KEY('user_id'));")
 
         cursor.execute("CREATE TABLE IF NOT EXISTS 'chats'"
@@ -183,7 +185,7 @@ class Database(object):
 
     def _add_user(self, user_id, lang_id, first_name, last_name, username):
         try:
-            self.cursor.execute("INSERT INTO users VALUES (?, ?, ?, ?, 0, 0, 0, 0, 0);", [str(user_id), first_name, last_name, username])
+            self.cursor.execute("INSERT INTO users VALUES (?, ?, ?, ?, 0, 0, 0, 0, 0, 0, 0);", [str(user_id), first_name, last_name, username])
             self.cursor.execute("INSERT INTO chats VALUES (?, ?);", [str(user_id), lang_id])
             self.connection.commit()
         except sqlite3.IntegrityError:
@@ -233,3 +235,19 @@ class Database(object):
 
     def close_conn(self):
         self.connection.close()
+    
+    def set_balance(self, user_id , balance):
+        self.cursor.execute("UPDATE users SET balance=? WHERE user_id=?;",[balance, str(user_id)])
+        self.connection.commit()
+
+    def get_balance(self,user_id):
+        self.cursor.execute("SELECT balance FROM users WHERE user_id=?;", [str(user_id)])
+        result = self.cursor.fetchone()
+        return result[0]
+    def set_bet(self,user_id, bet):
+        self.cursor.execute("UPDATE users SET bet=? WHERE user_id=?;", [bet,str(user_id)])
+        self.connection.commit()
+    def get_bet(self,user_id):
+        self.cursor.execute("SELECT bet FROM users WHERE user_id=?;", [str(user_id)])
+        result = self.cursor.fetchone()
+        return result[0]
