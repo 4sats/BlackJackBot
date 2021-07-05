@@ -6,7 +6,7 @@
 # Python-BlackJackBot
 
 This is the code for my Telegram Bot with which you can play the game Black Jack. 
-You can find the hosted version of it here: https://telegram.me/BlackJackBot
+You can find the hosted version of it here: https://telegram.me/WEBDBlackJackBot
 
 ## Setup
 This project is really easy to set up. No matter which of the following ways you'll use, you'll always need a config file.
