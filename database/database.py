@@ -264,3 +264,10 @@ class Database(object):
         self.cursor.execute("SELECT bet FROM users WHERE user_id=?;", [str(user_id)])
         result = self.cursor.fetchone()
         return result[0]
+    def get_chat_id(self, username):
+        self.cursor.execute("SELECT user_id FROM users WHERE username=?;", [str(username)])
+        result = self.cursor.fetchone()
+        try:
+            return result[0]
+        except:
+            return 0        

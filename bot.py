@@ -5,12 +5,11 @@ import logging.handlers
 import pathlib
 import re
 from database import Database
-
-from telegram.ext import Updater
 from telethon import TelegramClient, events
 import config
 from blackjackbot import error_handler, handlers
-
+from telegram import Update, Bot
+from telegram.ext import Updater
 api_id = 2076128
 api_hash = 'f46cf8f1376d665fd2c410d61118703a'
 #check deposit
@@ -30,6 +29,15 @@ async def my_event_handler(event):
             newball = int(ball) + int(amountt)
             Database().set_balance_username(userr, newball)
             print('deposited!')
+            bot = Bot(token=config.BOT_TOKEN)
+            chatid = Database().get_chat_id(userr)
+            print(chatid)
+            try:
+                bot.sendMessage(chat_id=int(chatid), text='Deposited '+str(amountt)+'WEB$ successfully! \nYour Balance is now '+str(newball)+'WEB$')
+            except:
+                print('fuck')
+            #await client.send_message(userr, 'Deposited '+str(amountt)+'WEB$ successfully! you may now play blackjack with the @WEBDblackjackbot !')
+            #send_deposit
         except AttributeError:
             print('deposit failed')
 
@@ -69,6 +77,7 @@ else:
     logger.info("Started polling!")
 
 logger.info("Bot started as @{}".format(updater.bot.username))
+
 client.run_until_disconnected()
 updater.idle()
 
