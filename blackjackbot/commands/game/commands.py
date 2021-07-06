@@ -235,3 +235,5 @@ def rules_cmd(update, context):
 
 def send_deposit(update, context):
     update.effective_message.reply_text("To deposit some web$ just send any amount of tips to @webdblackjack using @webdollar_tip_bot.")
+def send_whitdraw(update, context):
+    update.effective_message.reply_text("Bot is in beta mode can't withdraw for now!")
