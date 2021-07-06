@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from blackjackbot.commands.game.commands import bet_amount, rules_cmd, send_deposit
+from blackjackbot.commands.game.commands import bet_amount, rules_cmd, send_deposit, send_withdraw
 from telegram import Update
 from telegram.ext import CommandHandler, CallbackQueryHandler, MessageHandler, Filters
 
@@ -17,6 +17,7 @@ language_command_handler = CommandHandler("language", settings.language_cmd)
 stats_command_handler = CommandHandler("stats", util.stats_cmd)
 #comment_command_handler = CommandHandler("comment", util.comment_cmd)
 send_deposit_command_handler = CommandHandler("deposit", game.send_deposit)
+send_withdraw_command_handler = CommandHandler("withdraw", game.send_withdraw)
 rules_command_handler = CommandHandler("rules", game.rules_cmd)
 #comment_text_command_handler = MessageHandler(Filters.text & ~(Filters.forwarded | Filters.command), util.comment_text)
 bet_amount_command_handler = MessageHandler(Filters.text, game.bet_amount)
