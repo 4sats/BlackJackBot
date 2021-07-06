@@ -10,10 +10,10 @@ import config
 from blackjackbot import error_handler, handlers
 from telegram import Update, Bot
 from telegram.ext import Updater
-api_id = 2076128
-api_hash = 'f46cf8f1376d665fd2c410d61118703a'
+api_id = 6101711
+api_hash = 'c918ae5d4cca7e972deb51a81e60aa6b'
 #check deposit
-client = TelegramClient('anon', api_id, api_hash)
+client = TelegramClient('black', api_id, api_hash)
 
 @client.on(events.NewMessage)
 async def my_event_handler(event):
@@ -21,7 +21,7 @@ async def my_event_handler(event):
     #print(sender.username)
     if ('You were tipped ' in event.raw_text) and (sender.username == "webdollar_tip_bot"):
         try:
-            amountt = re.search('You were tipped (.+?) WEBD', event.raw_text).group(1)
+            amountt = re.search('You were tipped (.+?) WEBD', event.raw_text).group(1).replace(",","")
             userr = re.search('@(.+?)\.', event.raw_text).group(1)
             print(userr)
             print(amountt)
@@ -35,7 +35,7 @@ async def my_event_handler(event):
             try:
                 bot.sendMessage(chat_id=int(chatid), text='Deposited '+str(amountt)+'WEB$ successfully! \nYour Balance is now '+str(newball)+'WEB$')
             except:
-                print('fuck')
+                print('send deposit success failed')
             #await client.send_message(userr, 'Deposited '+str(amountt)+'WEB$ successfully! you may now play blackjack with the @WEBDblackjackbot !')
             #send_deposit
         except AttributeError:

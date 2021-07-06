@@ -34,7 +34,7 @@ def start_cmd(update, context):
             context.user_data["state"] = UserState.BETTING
             update.effective_message.reply_text("Your balance is "+str(balance)+"web$ \nPlease send amount you want to bet in web$:", reply_markup=ForceReply())            
         else:
-            update.effective_message.reply_text("please deposit some web$!")
+            update.effective_message.reply_text("please deposit some web$ by sending any amount of tips to @webdblackjack using @webdollar_tip_bot.")
 
 def bet_amount(update, context):
     #update.message.reply_text("kkkkkk")
@@ -227,7 +227,7 @@ def newgame_callback(update, context):
 
 
 def rules_cmd(update, context):
-    update.effective_message.reply_text("Rules:\n\n- Black Jack pays 3 to 2\n- Dealer must stand on 17 and must draw to 16\n- Insurance pays 2 to 1")
+    update.effective_message.reply_text("Rules:\n\n- Black Jack pays 1 to 1\n- Dealer must stand on 17 and must draw to 16")
 
 def send_deposit(update, context):
-    update.effective_message.reply_text("Deposit succesfully!")
+    update.effective_message.reply_text("To deposit some web$ just send any amount of tips to @webdblackjack using @webdollar_tip_bot.")
