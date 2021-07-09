@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from telegram.parsemode import ParseMode
-from telegram import ForceReply
+from telegram import ForceReply,Bot
 import blackjack.errors as errors
 from blackjack.game import BlackJackGame
 from blackjackbot.commands.util import html_mention, get_game_keyboard, get_join_keyboard, get_start_keyboard, remove_inline_keyboard
@@ -13,6 +13,9 @@ from blackjackbot.util import get_cards_string
 from database import Database
 from .functions import create_game, players_turn, next_player, is_button_affiliated
 from blackjackbot.util.userstate import UserState
+from telethon import TelegramClient, events
+import config
+
 
 def start_cmd(update, context):
     """Handles messages contianing the /start command. Starts a game for a specific user"""
@@ -26,6 +29,7 @@ def start_cmd(update, context):
     try:
         GameStore().get_game(update.effective_chat.id)
         # TODO notify user that there is a running game already?
+        update.effective_message.reply_text("There is a game already running stop it using this command /stop")
     except NoActiveGameException:
         # If there is no game, we create one
         #create_game(update, context)
@@ -236,4 +240,30 @@ def rules_cmd(update, context):
 def send_deposit(update, context):
     update.effective_message.reply_text("To deposit some web$ just send any amount of tips to @webdblackjack using @webdollar_tip_bot.")
 def send_withdraw(update, context):
-    update.effective_message.reply_text("Bot is in beta mode can't withdraw for now!")
+    #update.effective_message.reply_text("Bot is in beta mode can't withdraw for now!")
+    user = update.effective_user
+    balance = Database().get_balance(user.id)
+    try:
+        amount = context.args[0]
+        try:
+            amount = int(amount)
+            balance = int(balance)
+            if amount<=balance and amount>=10:
+                try:
+                    bot = Bot(token=config.BOT_TOKEN)
+                    bot.send_message(chat_id=Database().get_chat_id("webdblackjack"), text="NEW WITHDRAW REQUEST "+str(user)+" "+str(amount))
+                    with open('withdraw.txt', 'a') as file:
+                        file.write(user.username + " " + str(amount)+"\n")
+                except Exception as e: print(e)
+                Database().set_balance(user.id, balance-amount)
+                update.effective_message.reply_text("withdraw "+str(amount)+"web$ has been submitted and will be in your tipbot account soon!")
+            else:
+                update.effective_message.reply_text("amount more than your balance!\nYour balance:"+str(balance)+"web$")
+        except AttributeError:
+            update.effective_message.reply_text("Please use the command like this: \n/withdraw [amount]")
+    except:
+        update.effective_message.reply_text("Please use the command like this: \n/withdraw [amount]")
+def show_balance(update, context):
+    user = update.effective_user
+    balance = Database().get_balance(user.id)
+    update.effective_message.reply_text("Your Balance: "+str(balance)+ "WEB$\n\nDeposit more by tipping to @webdblackjack")

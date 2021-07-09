@@ -18,6 +18,7 @@ stats_command_handler = CommandHandler("stats", util.stats_cmd)
 #comment_command_handler = CommandHandler("comment", util.comment_cmd)
 send_deposit_command_handler = CommandHandler("deposit", game.send_deposit)
 send_withdraw_command_handler = CommandHandler("withdraw", game.send_withdraw)
+send_balance_command_handler = CommandHandler("balance", game.show_balance)
 rules_command_handler = CommandHandler("rules", game.rules_cmd)
 #comment_text_command_handler = MessageHandler(Filters.text & ~(Filters.forwarded | Filters.command), util.comment_text)
 bet_amount_command_handler = MessageHandler(Filters.text, game.bet_amount)
@@ -41,7 +42,7 @@ language_callback_handler = CallbackQueryHandler(settings.language_callback, pat
 
 handlers = [banned_user_handler,
             start_command_handler, stop_command_handler, join_callback_handler, hit_callback_handler,
-            stand_callback_handler, start_callback_handler, language_command_handler, stats_command_handler,send_deposit_command_handler,rules_command_handler,
+            stand_callback_handler, start_callback_handler, language_command_handler, stats_command_handler,send_balance_command_handler,send_withdraw_command_handler,send_deposit_command_handler,rules_command_handler,
             newgame_callback_handler, reload_lang_command_handler, language_callback_handler, users_command_handler,bet_amount_command_handler,
             answer_command_handler, ban_command_handler,
             unban_command_handler, bans_command_handler]
