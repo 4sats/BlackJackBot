@@ -36,9 +36,9 @@ def start_cmd(update, context):
         balance = Database().get_balance(user.id)
         if balance > 0:
             context.user_data["state"] = UserState.BETTING
-            update.effective_message.reply_text("Your balance is "+str(balance)+"sats \nPlease send amount you want to bet in sats:", reply_markup=ForceReply())            
+            update.effective_message.reply_text("Your balance is "+str(balance)+"sats \nPlease send the amount you want to bet in sats:", reply_markup=ForceReply())            
         else:
-            update.effective_message.reply_text("please deposit some sats by sending any amount of tips to @webdblackjack using @webdollar_tip_bot.")
+            update.effective_message.reply_text("please deposit some sats by using the command /deposit <amount in sats>")
 
 def bet_amount(update, context):
     #update.message.reply_text("kkkkkk")
@@ -57,7 +57,7 @@ def bet_amount(update, context):
             return
         # not more than 100 webd to bet
         if string_int>100:
-            update.message.reply_text("The bot is in beta mode now so you can't bet more than 100 webd for now! \nsend a less amount:")
+            update.message.reply_text("The bot is in beta mode now so you can't bet more than 100 sats for now! \nsend a less amount:")
             return
         if (balance >= string_int) :
             Database().set_bet(user.id, string_int)
@@ -254,9 +254,9 @@ def send_deposit(update, context):
             else:
                 update.effective_message.reply_text("amount more than your balance!\nYour balance:"+str(balance)+"sats")
         except AttributeError:
-            update.effective_message.reply_text("Please use the command like this: \n/withdraw <amount>")
+            update.effective_message.reply_text("Please use the command like this: \n/deposit <amount>")
     except:
-        update.effective_message.reply_text("Please use the command like this: \n/withdraw <amount>")
+        update.effective_message.reply_text("Please use the command like this: \n/deposit <amount>")
 
 def send_withdraw(update, context):
     #update.effective_message.reply_text("Bot is in beta mode can't withdraw for now!")
@@ -267,15 +267,18 @@ def send_withdraw(update, context):
         try:
             amount = int(amount)
             balance = int(balance)
-            if amount<=balance and amount>=10:
+            if amount<=balance and amount>=1:
                 try:
-                    bot = Bot(token=config.BOT_TOKEN)
-                    bot.send_message(chat_id=Database().get_chat_id("webdblackjack"), text="NEW WITHDRAW REQUEST "+str(user)+" "+str(amount))
-                    with open('withdraw.txt', 'a') as file:
-                        file.write(user.username + " " + str(amount)+"\n")
+                    invoice = requests.post("https://legend.lnbits.com/withdraw/api/v1/links", data = '{"title": "'+str(user.id)+'", "min_withdrawable": '+str(amount)+', "max_withdrawable": '+str(amount)+', "uses": 1, "wait_time": 1, "is_unique": true}', headers = {"X-Api-Key": config.api_key,"Content-type": "application/json"})
+                    kk = invoice.json()
+                    update.effective_message.reply_text(kk["lnurl"])
+                    # bot = Bot(token=config.BOT_TOKEN)
+                    # bot.send_message(chat_id=Database().get_chat_id("webdblackjack"), text="NEW WITHDRAW REQUEST "+str(user)+" "+str(amount))
+                    # with open('withdraw.txt', 'a') as file:
+                    #     file.write(user.username + " " + str(amount)+"\n")
                 except Exception as e: print(e)
                 Database().set_balance(user.id, balance-amount)
-                update.effective_message.reply_text("withdraw "+str(amount)+"sats has been submitted and will be in your tipbot account soon!")
+                update.effective_message.reply_text("withdraw of "+str(amount)+"sats has been submitted.")
             else:
                 update.effective_message.reply_text("amount more than your balance!\nYour balance:"+str(balance)+"sats")
         except AttributeError:
@@ -285,4 +288,4 @@ def send_withdraw(update, context):
 def show_balance(update, context):
     user = update.effective_user
     balance = Database().get_balance(user.id)
-    update.effective_message.reply_text("Your Balance: "+str(balance)+ "sats\n\nDeposit more by tipping to @webdblackjack")
+    update.effective_message.reply_text("Your Balance: "+str(balance)+ "sats\n\nDeposit more by using the command /deposit <amount in sats>")
