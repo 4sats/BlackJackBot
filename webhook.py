@@ -4,7 +4,7 @@ import sys
 
 app = Flask(__name__)
 
-@app.route('/*',methods=['POST'])
+@app.route('/<path:path>',methods=['POST'])
 def foo():
    #if request.remote_addr == "165.227.164.18":
    print(request.remote_addr + str(request.json)+" fuck meeeeeeee", file=sys.stderr)
