@@ -12,5 +12,5 @@ def foo():
    return Response(status=200)
 
 if __name__ == '__main__':
-   logging.basicConfig(filename='example.log', encoding='utf-8', level=logging.DEBUG)
+   logging.basicConfig(filename='f.log', encoding='utf-8', level=logging.DEBUG)
    app.run()
