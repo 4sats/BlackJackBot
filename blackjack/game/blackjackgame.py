@@ -213,16 +213,16 @@ class BlackJackGame(object):
                     list_lost.append(player)
 
         list_lost.extend(list_busted)
-        for player in list_lost:
-            bal = Database().get_balance(player.user_id)
-            bett = Database().get_bet(player.user_id)
-            newbal = bal - bett
-            Database().set_balance(player.user_id, newbal)
+        # for player in list_lost:
+        #     bal = Database().get_balance(player.user_id)
+        #     bett = Database().get_bet(player.user_id)
+        #     newbal = bal - bett
+        #     Database().set_balance(player.user_id, newbal)
 
         for player in list_won:
             bal = Database().get_balance(player.user_id)
             bett = Database().get_bet(player.user_id)
-            newbal = bal + bett
+            newbal = bal + 2*bett
             Database().set_balance(player.user_id, newbal)
 
         self.list_won = sorted(list_won, key=lambda player: player.cardvalue, reverse=True)

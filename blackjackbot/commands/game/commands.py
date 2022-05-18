@@ -61,6 +61,7 @@ def bet_amount(update, context):
             return
         if (balance >= string_int) :
             Database().set_bet(user.id, string_int)
+            Database().set_balance(user.id, balance - string_int)
             context.user_data["state"] = UserState.IDLE
             create_game(update, context)
         else:
