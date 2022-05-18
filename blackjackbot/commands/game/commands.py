@@ -269,7 +269,7 @@ def send_withdraw(update, context):
             balance = int(balance)
             if amount<=balance and amount>=1:
                 try:
-                    invoice = requests.post("https://legend.lnbits.com/withdraw/api/v1/links", data = '{"title": "'+str(user.id)+'", "min_withdrawable": '+str(amount)+', "max_withdrawable": '+str(amount)+', "uses": 1, "wait_time": 1, "is_unique": true}', headers = {"X-Api-Key": config.api_key,"Content-type": "application/json"})
+                    invoice = requests.post("https://legend.lnbits.com/withdraw/api/v1/links", data = '{"title": "'+str(user.id)+'", "min_withdrawable": '+str(amount)+', "max_withdrawable": '+str(amount)+', "uses": 1, "wait_time": 1, "is_unique": true}', headers = {"X-Api-Key": config.admin_key,"Content-type": "application/json"})
                     kk = invoice.json()
                     update.effective_message.reply_text(kk["lnurl"])
                     # bot = Bot(token=config.BOT_TOKEN)

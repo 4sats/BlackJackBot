@@ -9,3 +9,4 @@ LOGLEVEL = "INFO"
 #lnbits keys
 api_key = "sdfasdgafsdfgjygfjfgj"
 webhookurl = "http://webhook.4sat.xyz:5000/"
+admin_key = "asfghadfghjskfads"
