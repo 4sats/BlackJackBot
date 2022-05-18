@@ -247,7 +247,7 @@ def send_deposit(update, context):
             balance = int(balance)
             if amount>=1:
                 try:
-                    invoice = requests.post("https://legend.lnbits.com/api/v1/payments", data = '{"out": false,"amount":'+str(amount)+',"webhook": '+config.webhookurl+str(user.id)+'}', headers = {"X-Api-Key": config.api_key,"Content-type": "application/json"})
+                    invoice = requests.post("https://legend.lnbits.com/api/v1/payments", data = '{"out": false,"amount":'+str(amount)+',"webhook": "'+config.webhookurl+str(user.id)+'"}', headers = {"X-Api-Key": config.api_key,"Content-type": "application/json"})
                     kk = invoice.json()
                     update.effective_message.reply_text(kk["payment_request"])
                 except Exception as e: print(e)
