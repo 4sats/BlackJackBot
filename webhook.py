@@ -6,8 +6,8 @@ app = Flask(__name__)
 
 @app.route('/*',methods=['POST'])
 def foo():
-   if request.remote_addr == "165.227.164.18":
-        print(request.remote_addr + str(request.json)+" fuck meeeeeeee", file=sys.stderr)
+   #if request.remote_addr == "165.227.164.18":
+   print(request.remote_addr + str(request.json)+" fuck meeeeeeee", file=sys.stderr)
    return Response(status=200)
 
 if __name__ == '__main__':
