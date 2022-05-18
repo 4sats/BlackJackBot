@@ -5,3 +5,7 @@ WEBHOOK_PORT = 5001
 WEBHOOK_URL = "https://domain.example.com/" + BOT_TOKEN
 CERTPATH = "/etc/certs/example.com/fullchain.cer"
 LOGLEVEL = "INFO"
+
+#lnbits keys
+api_key = "sdfasdgafsdfgjygfjfgj"
+webhookurl = "http://webhook.4sat.xyz:5000/"

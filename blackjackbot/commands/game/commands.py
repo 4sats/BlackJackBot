@@ -14,7 +14,7 @@ from database import Database
 from .functions import create_game, players_turn, next_player, is_button_affiliated
 from blackjackbot.util.userstate import UserState
 from telethon import TelegramClient, events
-import config
+import config,requests
 
 
 def start_cmd(update, context):
@@ -238,7 +238,26 @@ def rules_cmd(update, context):
     update.effective_message.reply_text("Rules:\n\n- Black Jack pays 1 to 1\n- Dealer must stand on 17 and must draw to 16")
 
 def send_deposit(update, context):
-    update.effective_message.reply_text("To deposit some web$ just send any amount of tips to @webdblackjack using @webdollar_tip_bot.")
+    user = update.effective_user
+    balance = Database().get_balance(user.id)
+    try:
+        amount = context.args[0]
+        try:
+            amount = int(amount)
+            balance = int(balance)
+            if amount>=1:
+                try:
+                    invoice = requests.post("https://legend.lnbits.com/api/v1/payments", data = '{"out": false,"amount":'+str(amount)+'"webhook": '+config.webhookurl+str(user.id)+'}', headers = {"X-Api-Key": config.api_key,"Content-type": "application/json"})
+                    kk = invoice.json()
+                    update.effective_message.reply_text(kk["payment_request"])
+                except Exception as e: print(e)
+            else:
+                update.effective_message.reply_text("amount more than your balance!\nYour balance:"+str(balance)+"web$")
+        except AttributeError:
+            update.effective_message.reply_text("Please use the command like this: \n/withdraw <amount>")
+    except:
+        update.effective_message.reply_text("Please use the command like this: \n/withdraw <amount>")
+
 def send_withdraw(update, context):
     #update.effective_message.reply_text("Bot is in beta mode can't withdraw for now!")
     user = update.effective_user
