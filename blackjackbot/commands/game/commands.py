@@ -252,7 +252,7 @@ def send_deposit(update, context):
                     update.effective_message.reply_text(kk["payment_request"])
                 except Exception as e: print(e)
             else:
-                update.effective_message.reply_text("amount more than your balance!\nYour balance:"+str(balance)+"web$")
+                update.effective_message.reply_text("amount more than your balance!\nYour balance:"+str(balance)+"sats")
         except AttributeError:
             update.effective_message.reply_text("Please use the command like this: \n/withdraw <amount>")
     except:
