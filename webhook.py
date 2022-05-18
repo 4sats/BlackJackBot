@@ -1,10 +1,9 @@
-from flask import Flask, request
-import config
+from flask import Flask
 app = Flask(__name__)
 
-@app.route('/')
-def webhook():
-        print("Data received from Webhook is: ", request.json)
-        return "Webhook received!"
+@app.route("/")
+def hello():
+    return "<h1 style='color:blue'>Hello There!</h1>"
 
-app.run(host=config.WEBHOOK_IP)
+if __name__ == "__main__":
+    app.run(host='0.0.0.0')
