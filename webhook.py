@@ -7,4 +7,4 @@ def webhook():
         print("Data received from Webhook is: ", request.json)
         return "Webhook received!"
 
-app.run(host=config.WEBHOOK_IP, port=config.WEBHOOK_PORT)
+app.run(host=config.WEBHOOK_IP)
