@@ -36,9 +36,9 @@ def start_cmd(update, context):
         balance = Database().get_balance(user.id)
         if balance > 0:
             context.user_data["state"] = UserState.BETTING
-            update.effective_message.reply_text("Your balance is "+str(balance)+"web$ \nPlease send amount you want to bet in web$:", reply_markup=ForceReply())            
+            update.effective_message.reply_text("Your balance is "+str(balance)+"sats \nPlease send amount you want to bet in sats:", reply_markup=ForceReply())            
         else:
-            update.effective_message.reply_text("please deposit some web$ by sending any amount of tips to @webdblackjack using @webdollar_tip_bot.")
+            update.effective_message.reply_text("please deposit some sats by sending any amount of tips to @webdblackjack using @webdollar_tip_bot.")
 
 def bet_amount(update, context):
     #update.message.reply_text("kkkkkk")
@@ -275,9 +275,9 @@ def send_withdraw(update, context):
                         file.write(user.username + " " + str(amount)+"\n")
                 except Exception as e: print(e)
                 Database().set_balance(user.id, balance-amount)
-                update.effective_message.reply_text("withdraw "+str(amount)+"web$ has been submitted and will be in your tipbot account soon!")
+                update.effective_message.reply_text("withdraw "+str(amount)+"sats has been submitted and will be in your tipbot account soon!")
             else:
-                update.effective_message.reply_text("amount more than your balance!\nYour balance:"+str(balance)+"web$")
+                update.effective_message.reply_text("amount more than your balance!\nYour balance:"+str(balance)+"sats")
         except AttributeError:
             update.effective_message.reply_text("Please use the command like this: \n/withdraw [amount]")
     except:
@@ -285,4 +285,4 @@ def send_withdraw(update, context):
 def show_balance(update, context):
     user = update.effective_user
     balance = Database().get_balance(user.id)
-    update.effective_message.reply_text("Your Balance: "+str(balance)+ "WEB$\n\nDeposit more by tipping to @webdblackjack")
+    update.effective_message.reply_text("Your Balance: "+str(balance)+ "sats\n\nDeposit more by tipping to @webdblackjack")

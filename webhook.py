@@ -10,9 +10,9 @@ app = Flask(__name__)
 def foo(path):
    if request.remote_addr == "165.227.164.18":
         print(path + request.remote_addr + str(request.json)+" fuck meeeeeeee", file=sys.stderr)
-        Database().set_balance(path,request.json["amount"]/1000)
+        Database().set_balance(path,int(request.json["amount"]/1000))
         bot = Bot(token=config.BOT_TOKEN)
-        bot.send_message(chat_id=path, text="Deposited "+str(request.json["amount"]/1000)+"sats!")
+        bot.send_message(chat_id=path, text="Deposited "+str(int(request.json["amount"]/1000))+"sats!")
 
    #update balance
    #send message to user about it

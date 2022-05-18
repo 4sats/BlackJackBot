@@ -33,10 +33,10 @@ api_hash = 'c918ae5d4cca7e972deb51a81e60aa6b'
 #             chatid = Database().get_chat_id(userr)
 #             print(chatid)
 #             try:
-#                 bot.sendMessage(chat_id=int(chatid), text='Deposited '+str(amountt)+'WEB$ successfully! \nYour Balance is now '+str(newball)+'WEB$')
+#                 bot.sendMessage(chat_id=int(chatid), text='Deposited '+str(amountt)+'sats successfully! \nYour Balance is now '+str(newball)+'sats')
 #             except:
 #                 print('send deposit success failed')
-#             #await client.send_message(userr, 'Deposited '+str(amountt)+'WEB$ successfully! you may now play blackjack with the @WEBDblackjackbot !')
+#             #await client.send_message(userr, 'Deposited '+str(amountt)+'sats successfully! you may now play blackjack with the @WEBDblackjackbot !')
 #             #send_deposit
 #         except AttributeError:
 #             print('deposit failed')
