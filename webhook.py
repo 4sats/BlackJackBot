@@ -8,7 +8,9 @@ app = Flask(__name__)
 @app.route('/',methods=['POST'])
 def foo():
    #data = json.loads(request.data)
-   logging.debug('This: '+ str(request.data))
+   f = open("test.txt", "a")
+   f.write("Now "+ str(request.data))
+   f.close()
    return Response(status=200)
 
 if __name__ == '__main__':
