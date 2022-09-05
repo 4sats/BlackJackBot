@@ -56,8 +56,8 @@ def bet_amount(update, context):
             update.message.reply_text("the amount is not acceptable please send a correct amount:")
             return
         # not more than 100 webd to bet
-        if string_int>500:
-            update.message.reply_text("The bot is in beta mode now so you can't bet more than 500 sats for now! \nsend a less amount:")
+        if string_int>10000:
+            update.message.reply_text("The bot is in beta mode now so you can't bet more than 10000 sats for now! \nsend a less amount:")
             return
         if (balance >= string_int) :
             Database().set_bet(user.id, string_int)
